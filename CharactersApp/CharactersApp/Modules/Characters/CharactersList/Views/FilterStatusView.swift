@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import UIKit
+import UIKit
 
 class StatusFilterView: UIView {
     
@@ -15,44 +16,61 @@ class StatusFilterView: UIView {
     let statusStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        stackView.alignment = .leading
+        stackView.distribution = .fillProportionally
         stackView.spacing = 10
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
-    // Buttons for each status
+    // Buttons for each status using UIButtonConfiguration
     let aliveButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Alive", for: .normal)
-        button.setTitleColor(.black, for: .normal) // Set text color to black
-        button.backgroundColor = .clear // Clear background
-        button.layer.borderWidth = 1.0 // Border width of 1
-        button.layer.borderColor = UIColor.black.cgColor // Border color to black
-        button.layer.cornerRadius = 8 // Rounded corners
+        
+        // Create the configuration for iOS 15+
+        var config = UIButton.Configuration.filled()
+        config.title = "Alive"
+        config.baseForegroundColor = .black
+        config.background.backgroundColor = .clear
+        config.background.strokeWidth = 1
+        config.background.strokeColor = .lightGray
+        config.background.cornerRadius = 12
+        config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 16) // Padding for text
+        
+        button.configuration = config // Apply the configuration
         return button
     }()
     
     let deadButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Dead", for: .normal)
-        button.setTitleColor(.black, for: .normal) // Set text color to black
-        button.backgroundColor = .clear // Clear background
-        button.layer.borderWidth = 1.0 // Border width of 1
-        button.layer.borderColor = UIColor.black.cgColor // Border color to black
-        button.layer.cornerRadius = 8 // Rounded corners
+        
+        // Create the configuration for iOS 15+
+        var config = UIButton.Configuration.filled()
+        config.title = "Dead"
+        config.baseForegroundColor = .black
+        config.background.backgroundColor = .clear
+        config.background.strokeWidth = 1
+        config.background.strokeColor = .lightGray
+        config.background.cornerRadius = 12
+        config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 16) // Padding for text
+        
+        button.configuration = config // Apply the configuration
         return button
     }()
     
     let unknownButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Unknown", for: .normal)
-        button.setTitleColor(.black, for: .normal) // Set text color to black
-        button.backgroundColor = .clear // Clear background
-        button.layer.borderWidth = 1.0 // Border width of 1
-        button.layer.borderColor = UIColor.black.cgColor // Border color to black
-        button.layer.cornerRadius = 8 // Rounded corners
+        
+        // Create the configuration for iOS 15+
+        var config = UIButton.Configuration.filled()
+        config.title = "Unknown"
+        config.baseForegroundColor = .black
+        config.background.backgroundColor = .clear
+        config.background.strokeWidth = 1
+        config.background.strokeColor = .lightGray
+        config.background.cornerRadius = 12
+        config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 16) // Padding for text
+        
+        button.configuration = config // Apply the configuration
         return button
     }()
 
@@ -80,7 +98,6 @@ class StatusFilterView: UIView {
         NSLayoutConstraint.activate([
             statusStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
             statusStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            statusStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             statusStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
             statusStackView.heightAnchor.constraint(equalToConstant: 50)
         ])
