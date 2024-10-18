@@ -11,6 +11,10 @@ class CharactersViewController: UIViewController, UITableViewDataSource, UITable
     
     var viewModel: CharactersViewModelProtocol
     var tableView = UITableView()
+    
+    // Variable to hold the current status filter
+    var selectedStatus: String?
+    
     // Add the custom StatusFilterView at the top
     let statusFilterView = StatusFilterView()
     
@@ -31,7 +35,20 @@ class CharactersViewController: UIViewController, UITableViewDataSource, UITable
         setupStatusFilterView()
         setupTableView()
         setupBindings()
-        viewModel.fetchCharacters()
+        viewModel.fetchCharacters(withStatus: nil, completion: { })
+        
+        // Add observer to reload table view when data is updated
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView), name: NSNotification.Name("ReloadTableView"), object: nil)
+    }
+    
+    @objc func reloadTableView() {
+        tableView.reloadData()
+        
+        // Scroll to the top of the table view (first row)
+        if viewModel.numberOfRowsInSection() > 0 {
+            let indexPath = IndexPath(row: 0, section: 0)
+            tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        }
     }
     
     func setupStatusFilterView() {
@@ -50,9 +67,9 @@ class CharactersViewController: UIViewController, UITableViewDataSource, UITable
         
         // Optionally set button actions
         statusFilterView.setButtonActions(
-            aliveAction: #selector(showAliveCharacters),
-            deadAction: #selector(showDeadCharacters),
-            unknownAction: #selector(showUnknownCharacters),
+            aliveAction: #selector(filterByAlive),
+            deadAction: #selector(filterByDead),
+            unknownAction: #selector(filterByUnknown),
             target: self
         )
     }
@@ -107,25 +124,31 @@ class CharactersViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
     }
-
+    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return viewModel.nextPageURL != nil ? 50 : 0
     }
-
     
-      // Define actions for the buttons (filtering based on status)
-      @objc func showAliveCharacters() {
-          // Implement filtering logic for "Alive" characters
-          print("Show Alive characters")
-      }
-      
-      @objc func showDeadCharacters() {
-          // Implement filtering logic for "Dead" characters
-          print("Show Dead characters")
-      }
-      
-      @objc func showUnknownCharacters() {
-          // Implement filtering logic for "Unknown" characters
-          print("Show Unknown characters")
-      }
+    
+    // Actions for the filter buttons
+    @objc func filterByAlive() {
+        selectedStatus = "alive"
+        viewModel.fetchCharacters(withStatus: selectedStatus) {
+            self.reloadTableView()
+        }
+    }
+    
+    @objc func filterByDead() {
+        selectedStatus = "alive"
+        viewModel.fetchCharacters(withStatus: selectedStatus) {
+            self.reloadTableView()
+        }
+    }
+    
+    @objc func filterByUnknown() {
+        selectedStatus = "alive"
+        viewModel.fetchCharacters(withStatus: selectedStatus) {
+            self.reloadTableView()
+        }
+    }
 }

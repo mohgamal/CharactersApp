@@ -11,15 +11,14 @@ protocol CharactersViewModelProtocol {
     var characters: [Character] { get }
     var reloadTableView: (() -> Void)? { get set }
     var nextPageURL: String? { get }
-    
-    func fetchCharacters()
+    func fetchCharacters(withStatus status: String?, completion: @escaping () -> Void)
     func numberOfRowsInSection() -> Int
     func characterAtIndexPath(_ indexPath: IndexPath) -> Character
     func fetchNextPageIfNeeded(for indexPath: IndexPath)
 }
 
-
 class CharactersViewModel: CharactersViewModelProtocol {
+    
     var charactersService: CharctersServiceProtocol
     var coordinator: MainCoordinator?
     var characters: [Character] = []
@@ -31,15 +30,17 @@ class CharactersViewModel: CharactersViewModelProtocol {
         self.charactersService = charactersService
     }
     
-    func fetchCharacters() {
-        charactersService.fetchCharacters { [weak self] result in
+    func fetchCharacters(withStatus status: String?, completion: @escaping () -> Void) {
+        charactersService.fetchCharacters(withStatus: status) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.characters.append(contentsOf: response.results)
                 self?.charactersService.urlString = response.info.next  // Update URL for the next page
+                // Post notification when the characters are fetched successfully
                 DispatchQueue.main.async {
-                    self?.reloadTableView?()
+                    NotificationCenter.default.post(name: NSNotification.Name("ReloadTableView"), object: nil)
                 }
+                
             case .failure(let error):
                 DispatchQueue.main.async {
                     self?.showError?(error.localizedDescription)
@@ -57,7 +58,7 @@ class CharactersViewModel: CharactersViewModelProtocol {
     
     func fetchNextPageIfNeeded(for indexPath: IndexPath) {
         if indexPath.row == characters.count - 1 {
-            fetchCharacters() // Fetch next page when the user reaches the bottom of the list
+            fetchCharacters(withStatus: nil, completion: { }) // Fetch next page when the user reaches the bottom of the list
         }
     }
 }

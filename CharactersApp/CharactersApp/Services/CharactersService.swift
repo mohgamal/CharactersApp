@@ -9,14 +9,20 @@ import Foundation
 
 protocol CharctersServiceProtocol {
     var urlString: String? { get set }
-    func fetchCharacters(completion: @escaping (Result<CharactersResponse, Error>) -> Void)
+    func fetchCharacters(withStatus status: String?, completion: @escaping (Result<CharactersResponse, Error>) -> Void)
+
 }
 
 class CharctersService: CharctersServiceProtocol {
     var urlString: String? = "https://rickandmortyapi.com/api/character"
     
-    func fetchCharacters(completion: @escaping (Result<CharactersResponse, Error>) -> Void) {
-        guard let urlString = urlString, let url = URL(string: urlString) else {
+    func fetchCharacters(withStatus status: String?, completion: @escaping (Result<CharactersResponse, Error>) -> Void) {
+        // Append the status filter if provided
+             if let status = status {
+                 urlString! += "&status=\(status)"
+             }
+        
+        guard let url = URL(string: urlString ?? "") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
             return
         }
