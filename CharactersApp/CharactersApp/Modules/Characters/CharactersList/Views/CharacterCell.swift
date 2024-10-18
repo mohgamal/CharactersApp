@@ -52,6 +52,7 @@ class CharacterCell: UITableViewCell {
     }
     
     func setupViews() {
+        selectionStyle = .none
         contentView.addSubview(frameView)
         frameView.addSubview(characterImageView)
         frameView.addSubview(nameLabel)
