@@ -10,16 +10,26 @@ import UIKit
 
 class MainCoordinator: Coordinator {
     var navigationController: UINavigationController
-    
+
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
+        
+        // Enable large titles for the entire navigation stack
+        navigationController.navigationBar.prefersLargeTitles = true
     }
-    
+
     func start() {
+        // Initialize the NetworkService and CharactersViewModel
         let charactersService = CharctersService()
         let viewModel = CharactersViewModel(charactersService: charactersService)
-        let viewController = CharactersViewController(viewModel: viewModel)
-        viewModel.coordinator = self
-        navigationController.pushViewController(viewController, animated: true)
+        
+        // Initialize the CharactersViewController and pass in the ViewModel
+        let charactersViewController = CharactersViewController(viewModel: viewModel)
+        
+        // Set the title to "Characters"
+        charactersViewController.title = "Characters"
+        
+        // Push the CharactersViewController onto the navigation stack
+        navigationController.pushViewController(charactersViewController, animated: false)
     }
 }

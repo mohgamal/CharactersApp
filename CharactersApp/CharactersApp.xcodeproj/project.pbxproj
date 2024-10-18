@@ -27,6 +27,7 @@
 		9ACA30332CC2470200BD8D08 /* CharactersListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA30322CC2470200BD8D08 /* CharactersListViewModelTests.swift */; };
 		9ACA30362CC247B500BD8D08 /* CharctersServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA30352CC247B500BD8D08 /* CharctersServiceMock.swift */; };
 		9ACA303B2CC249A800BD8D08 /* CharactersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA303A2CC249A800BD8D08 /* CharactersService.swift */; };
+		9ACA303D2CC2564400BD8D08 /* FilterStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA303C2CC2564400BD8D08 /* FilterStatusView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		9ACA30322CC2470200BD8D08 /* CharactersListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersListViewModelTests.swift; sourceTree = "<group>"; };
 		9ACA30352CC247B500BD8D08 /* CharctersServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharctersServiceMock.swift; sourceTree = "<group>"; };
 		9ACA303A2CC249A800BD8D08 /* CharactersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersService.swift; sourceTree = "<group>"; };
+		9ACA303C2CC2564400BD8D08 /* FilterStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterStatusView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +218,7 @@
 			children = (
 				9ACA30222CC2411D00BD8D08 /* CharacterCell.swift */,
 				9ACA30272CC2423400BD8D08 /* LoadingFooterView.swift */,
+				9ACA303C2CC2564400BD8D08 /* FilterStatusView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -394,6 +397,7 @@
 				9ACA30202CC240FC00BD8D08 /* CharactersViewController.swift in Sources */,
 				9ACA301E2CC240D300BD8D08 /* CharactersViewModel.swift in Sources */,
 				9ACA301A2CC2406900BD8D08 /* Coordinator.swift in Sources */,
+				9ACA303D2CC2564400BD8D08 /* FilterStatusView.swift in Sources */,
 				9ACA30232CC2411D00BD8D08 /* CharacterCell.swift in Sources */,
 				9ACA2FE32CC23EB800BD8D08 /* AppDelegate.swift in Sources */,
 				9ACA30262CC2413900BD8D08 /* CharacterModel.swift in Sources */,
