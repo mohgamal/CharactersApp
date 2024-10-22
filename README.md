@@ -24,7 +24,7 @@
     open CharacterListApp.xcodeproj
     ```
 
-3. Install dependencies if needed (e.g., `SDWebImageSwiftUI`). You can add this through Swift Package Manager.
+3. Install dependencies if needed (e.g., `SDWebImage`). You can add this through Swift Package Manager.
 
 4. Build and run the project in Xcode.
 
@@ -38,7 +38,7 @@
 
 The app uses a **Coordinator** to handle navigation logic, decoupling it from the view controllers.
 
-- The `MainCoordinator` is responsible for:
+- The `CharactersCoordinator` is responsible for:
   - Presenting the `CharacterListViewController` with the list of characters.
   - Navigating to the `CharacterDetailView` when a character is selected from the list.
 
