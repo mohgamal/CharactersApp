@@ -32,6 +32,9 @@
 		9ACA30412CC7B2AF00BD8D08 /* CharacterDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA30402CC7B2AF00BD8D08 /* CharacterDetailsViewModel.swift */; };
 		9ACA30432CC7B2D700BD8D08 /* CharacterDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA30422CC7B2D700BD8D08 /* CharacterDetailsView.swift */; };
 		9ACA30452CC7B33B00BD8D08 /* CharacterDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA30442CC7B33B00BD8D08 /* CharacterDetailsViewController.swift */; };
+		9ACA30472CC7B72F00BD8D08 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA30462CC7B72F00BD8D08 /* AppEnvironment.swift */; };
+		9ACA304B2CC7B86F00BD8D08 /* CharactersEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA304A2CC7B86F00BD8D08 /* CharactersEndpoint.swift */; };
+		9ACA304D2CC7B8DE00BD8D08 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA304C2CC7B8DE00BD8D08 /* NetworkError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +82,9 @@
 		9ACA30402CC7B2AF00BD8D08 /* CharacterDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailsViewModel.swift; sourceTree = "<group>"; };
 		9ACA30422CC7B2D700BD8D08 /* CharacterDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailsView.swift; sourceTree = "<group>"; };
 		9ACA30442CC7B33B00BD8D08 /* CharacterDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailsViewController.swift; sourceTree = "<group>"; };
+		9ACA30462CC7B72F00BD8D08 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		9ACA304A2CC7B86F00BD8D08 /* CharactersEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersEndpoint.swift; sourceTree = "<group>"; };
+		9ACA304C2CC7B8DE00BD8D08 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +227,8 @@
 			isa = PBXGroup;
 			children = (
 				9ACA30192CC2406900BD8D08 /* Coordinator.swift */,
+				9ACA30462CC7B72F00BD8D08 /* AppEnvironment.swift */,
+				9ACA304C2CC7B8DE00BD8D08 /* NetworkError.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -264,9 +272,18 @@
 		9ACA30392CC2498F00BD8D08 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				9ACA30492CC7B85F00BD8D08 /* Endpoints */,
 				9ACA303A2CC249A800BD8D08 /* CharactersService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		9ACA30492CC7B85F00BD8D08 /* Endpoints */ = {
+			isa = PBXGroup;
+			children = (
+				9ACA304A2CC7B86F00BD8D08 /* CharactersEndpoint.swift */,
+			);
+			path = Endpoints;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -411,6 +428,8 @@
 				9ACA30452CC7B33B00BD8D08 /* CharacterDetailsViewController.swift in Sources */,
 				9ACA301A2CC2406900BD8D08 /* Coordinator.swift in Sources */,
 				9ACA30432CC7B2D700BD8D08 /* CharacterDetailsView.swift in Sources */,
+				9ACA304B2CC7B86F00BD8D08 /* CharactersEndpoint.swift in Sources */,
+				9ACA30472CC7B72F00BD8D08 /* AppEnvironment.swift in Sources */,
 				9ACA303D2CC2564400BD8D08 /* FilterStatusView.swift in Sources */,
 				9ACA30232CC2411D00BD8D08 /* CharacterCell.swift in Sources */,
 				9ACA2FE32CC23EB800BD8D08 /* AppDelegate.swift in Sources */,
@@ -419,6 +438,7 @@
 				9ACA303F2CC7A14300BD8D08 /* CharactersViewController+Tableview.swift in Sources */,
 				9ACA30412CC7B2AF00BD8D08 /* CharacterDetailsViewModel.swift in Sources */,
 				9ACA30282CC2423400BD8D08 /* LoadingFooterView.swift in Sources */,
+				9ACA304D2CC7B8DE00BD8D08 /* NetworkError.swift in Sources */,
 				9ACA2FE52CC23EB800BD8D08 /* SceneDelegate.swift in Sources */,
 				9ACA303B2CC249A800BD8D08 /* CharactersService.swift in Sources */,
 			);
@@ -593,6 +613,7 @@
 		9ACA300A2CC23EB800BD8D08 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				API_BASE_URL = "https://rickandmortyapi.com/api/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -627,6 +648,7 @@
 		9ACA300B2CC23EB800BD8D08 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				API_BASE_URL = "https://rickandmortyapi.com/api/";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;

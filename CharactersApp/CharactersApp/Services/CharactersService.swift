@@ -15,23 +15,15 @@ protocol CharctersServiceProtocol {
 }
 
 class CharctersService: CharctersServiceProtocol {
-    var urlString: String? = "https://rickandmortyapi.com/api/character"
+    var urlString: String? = "\(Environment.apiBaseUrl)character"
     var status: String? = nil
     
     func fetchCharacters(completion: @escaping (Result<CharactersResponse, Error>) -> Void) {
-        // Append the status filter if provided
-        if let status = status, var url = urlString {
-            if !url.contains("status") {
-                url += "?status=\(status)"
-            }
-        }
-        
-        guard let url = URL(string: urlString ?? "") else {
-            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+        guard let request = APIEndpoint.characterList.urlRequest else {
             return
         }
         
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 completion(.failure(error))
                 return
