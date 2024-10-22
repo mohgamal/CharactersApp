@@ -15,7 +15,6 @@
 
     ```bash
     git clone git@github.com:mohgamal/CharactersApp.git
-    cd character-list-app
     ```
 
 2. Open the project in Xcode:
