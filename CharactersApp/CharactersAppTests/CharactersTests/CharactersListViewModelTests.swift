@@ -102,4 +102,92 @@ class CharactersViewControllerTests: XCTestCase {
         XCTAssertNil(viewController.statusFilterView.currentlySelectedButton)  // Ensure no button is selected
         XCTAssertEqual(mockViewModel.fetchedStatus, nil)  // Ensure the status was cleared
     }
+    
+    func testNumberOfRowsInSection() {
+        // Given
+        let characters = [
+            Character(id: 1, name: "Rick", status: "Alive", species: "Human", image: ""),
+            Character(id: 2, name: "Morty", status: "Alive", species: "Human", image: "")
+        ]
+        mockViewModel.characters = characters
+        
+        // When
+        mockViewModel.charactersSubject.send(characters)  // Simulate fetching characters
+        
+        // Then
+        XCTAssertEqual(mockViewModel.numberOfRowsInSection(), 2)  // There should be 2 rows
+    }
+
+    func testCharacterAtIndexPath() {
+        // Given
+        let characters = [
+            Character(id: 1, name: "Rick", status: "Alive", species: "Human", image: ""),
+            Character(id: 2, name: "Morty", status: "Alive", species: "Human", image: "")
+        ]
+        mockViewModel.characters = characters
+        
+        // When
+        mockViewModel.charactersSubject.send(characters)  // Simulate fetching characters
+        
+        // Then
+        let firstCharacter = mockViewModel.characterAtIndexPath(IndexPath(row: 0, section: 0))
+        XCTAssertEqual(firstCharacter.name, "Rick")  // First character should be Rick
+        
+        let secondCharacter = mockViewModel.characterAtIndexPath(IndexPath(row: 1, section: 0))
+        XCTAssertEqual(secondCharacter.name, "Morty")  // Second character should be Morty
+    }
+
+    func testFetchNextPageIfNeededWhenReachingLastRow() {
+        // Given
+        let characters = [
+            Character(id: 1, name: "Rick", status: "Alive", species: "Human", image: ""),
+            Character(id: 2, name: "Morty", status: "Alive", species: "Human", image: "")
+        ]
+        mockViewModel.characters = characters
+        mockViewModel.nextPageURL = "next_page_url"  // Simulate pagination is available
+        
+        // When
+        mockViewModel.fetchNextPageIfNeeded(for: IndexPath(row: 1, section: 0))  // Last row
+        
+        // Then
+        XCTAssertTrue(mockViewModel.fetchCalled)  // Ensure fetchCharacters was called for the next page
+    }
+
+    func testFetchNextPageIfNeededWhenNotAtLastRow() {
+        // Given
+        mockViewModel.fetchCalled = false
+        let characters = [
+            Character(id: 1, name: "Rick", status: "Alive", species: "Human", image: ""),
+            Character(id: 2, name: "Morty", status: "Alive", species: "Human", image: "")
+        ]
+        
+        mockViewModel.charactersSubject.send(characters)
+        mockViewModel.nextPageURL = "next_page_url"  // Simulate pagination is available
+        
+        // When
+        mockViewModel.fetchNextPageIfNeeded(for: IndexPath(row: 0, section: 0))  // Not the last row
+        
+        // Then
+        XCTAssertFalse(mockViewModel.fetchCalled)  // Ensure fetchCharacters was not called
+    }
+
+    func testFetchNextPageIfNeededWhenNoNextPageAvailable() {
+        
+        // Given
+        mockViewModel.fetchCalled = false
+        let characters = [
+            Character(id: 1, name: "Rick", status: "Alive", species: "Human", image: ""),
+            Character(id: 2, name: "Morty", status: "Alive", species: "Human", image: "")
+        ]
+        
+        mockViewModel.charactersSubject.send(characters)
+        mockViewModel.nextPageURL = nil  // No next page available
+        
+        // When
+        mockViewModel.fetchNextPageIfNeeded(for: IndexPath(row: 1, section: 0))  // Last row
+        
+        // Then
+        XCTAssertFalse(mockViewModel.fetchCalled)  // Ensure fetchCharacters was not called
+    }
+
 }
