@@ -10,7 +10,7 @@ import Combine
 
 protocol CharactersViewModelProtocol {
     var charactersSubject: CurrentValueSubject<[Character], Never> { get }
-    var coordinator: MainCoordinator? { get set }
+    var coordinator: CharactersCoordinator? { get set }
     var reloadTableView: (() -> Void)? { get set }
     var nextPageURL: String? { get }
     func fetchCharacters(withStatus status: String?)
@@ -21,13 +21,13 @@ protocol CharactersViewModelProtocol {
 
 class CharactersViewModel: CharactersViewModelProtocol {
     var charactersService: CharctersServiceProtocol
-    var coordinator: MainCoordinator?
+    var coordinator: CharactersCoordinator?
     var charactersSubject = CurrentValueSubject<[Character], Never>([])
     var reloadTableView: (() -> Void)?
     var nextPageURL: String?
     var showError: ((String) -> Void)?
     
-    init(charactersService: CharctersServiceProtocol, coordinator: MainCoordinator) {
+    init(charactersService: CharctersServiceProtocol, coordinator: CharactersCoordinator) {
         self.charactersService = charactersService
         self.coordinator = coordinator
     }

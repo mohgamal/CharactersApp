@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SwiftUI
 
-class MainCoordinator: Coordinator {
+class CharactersCoordinator: Coordinator {
     var navigationController: UINavigationController
 
     init(navigationController: UINavigationController) {
