@@ -7,7 +7,12 @@
 
 import Foundation
 import UIKit
-class CharactersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+import Combine
+
+class CharactersViewController: UIViewController {
+    
+    // Combine property to hold any subscriptions
+    private var cancellables = Set<AnyCancellable>()
     
     var viewModel: CharactersViewModelProtocol
     var tableView = UITableView()
@@ -32,23 +37,27 @@ class CharactersViewController: UIViewController, UITableViewDataSource, UITable
         // Ensure large titles are enabled for this view
         navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = .white
+        
         setupStatusFilterView()
         setupTableView()
-        setupBindings()
-        viewModel.fetchCharacters(withStatus: nil, completion: { })
-        
-        // Add observer to reload table view when data is updated
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableView), name: NSNotification.Name("ReloadTableView"), object: nil)
+        bindViewModel()
+        fetchData(withStatus: nil)
     }
     
-    @objc func reloadTableView() {
-        tableView.reloadData()
-        
-        // Scroll to the top of the table view (first row)
-        if viewModel.numberOfRowsInSection() > 0 {
-            let indexPath = IndexPath(row: 0, section: 0)
-            tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-        }
+    func bindViewModel() {
+        // Observe the characters subject and reload the table view when the data changes
+        viewModel.charactersSubject
+            .receive(on: RunLoop.main)  // Ensure updates happen on the main thread
+            .sink { [weak self] _ in
+                guard let self else { return }
+                self.tableView.reloadData()
+                // Scroll to the top of the table view (first row)
+                if self.viewModel.numberOfRowsInSection() > 0 && selectedStatus != nil {
+                    let indexPath = IndexPath(row: 0, section: 0)
+                    tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                }
+            }
+            .store(in: &cancellables)  // Store the subscription to keep it alive
     }
     
     func setupStatusFilterView() {
@@ -67,9 +76,9 @@ class CharactersViewController: UIViewController, UITableViewDataSource, UITable
         
         // Optionally set button actions
         statusFilterView.setButtonActions(
-            aliveAction: #selector(filterByAlive),
-            deadAction: #selector(filterByDead),
-            unknownAction: #selector(filterByUnknown),
+            aliveAction: #selector(toggleAliveFilter),
+            deadAction: #selector(toggleDeadFilter),
+            unknownAction: #selector(toggleUnknownFilter),
             target: self
         )
     }
@@ -92,63 +101,39 @@ class CharactersViewController: UIViewController, UITableViewDataSource, UITable
         ])
     }
     
-    func setupBindings() {
-        viewModel.reloadTableView = { [weak self] in
-            self?.tableView.reloadData()
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfRowsInSection()
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CharacterCell", for: indexPath) as! CharacterCell
-        let character = viewModel.characterAtIndexPath(indexPath)
-        cell.configure(with: character)
-        
-        // Check if we need to load more characters
-        viewModel.fetchNextPageIfNeeded(for: indexPath)
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if viewModel.nextPageURL != nil {
-            return LoadingFooterView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50))
-        } else {
-            return nil
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 120
-    }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return viewModel.nextPageURL != nil ? 50 : 0
-    }
-    
-    
     // Actions for the filter buttons
-    @objc func filterByAlive() {
-        selectedStatus = "alive"
-        viewModel.fetchCharacters(withStatus: selectedStatus) {
-            self.reloadTableView()
+    @objc func toggleAliveFilter() {
+        statusFilterView.toggleButtonSelection(statusFilterView.aliveButton)  // Toggle the button state
+        if statusFilterView.currentlySelectedButton == statusFilterView.aliveButton {
+            fetchData(withStatus: "alive")
+        } else {
+            fetchData(withStatus: nil)  // Fetch all characters if deselected
         }
     }
     
-    @objc func filterByDead() {
-        selectedStatus = "alive"
-        viewModel.fetchCharacters(withStatus: selectedStatus) {
-            self.reloadTableView()
+    @objc func toggleDeadFilter() {
+        statusFilterView.toggleButtonSelection(statusFilterView.deadButton)  // Toggle the button state
+        if statusFilterView.currentlySelectedButton == statusFilterView.deadButton {
+            fetchData(withStatus: "dead")
+        } else {
+            fetchData(withStatus: nil)  // Fetch all characters if deselected
         }
     }
     
-    @objc func filterByUnknown() {
-        selectedStatus = "alive"
-        viewModel.fetchCharacters(withStatus: selectedStatus) {
-            self.reloadTableView()
+    @objc func toggleUnknownFilter() {
+        statusFilterView.toggleButtonSelection(statusFilterView.unknownButton)  // Toggle the button state
+        if statusFilterView.currentlySelectedButton == statusFilterView.unknownButton {
+            fetchData(withStatus: "unknown")
+        } else {
+            fetchData(withStatus: nil)  // Fetch all characters if deselected
         }
+    }
+    
+    func fetchData(withStatus status: String?) {
+        viewModel.fetchCharacters(withStatus: status)
+    }
+    
+    func resetCharacters() {
+        viewModel.charactersSubject.send([])  // Clear the current characters
     }
 }

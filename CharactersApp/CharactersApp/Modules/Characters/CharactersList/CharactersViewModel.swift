@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import Combine
 
 protocol CharactersViewModelProtocol {
-    var characters: [Character] { get }
+    var charactersSubject: CurrentValueSubject<[Character], Never> { get }
     var reloadTableView: (() -> Void)? { get set }
     var nextPageURL: String? { get }
-    func fetchCharacters(withStatus status: String?, completion: @escaping () -> Void)
+    func fetchCharacters(withStatus status: String?)
     func numberOfRowsInSection() -> Int
     func characterAtIndexPath(_ indexPath: IndexPath) -> Character
     func fetchNextPageIfNeeded(for indexPath: IndexPath)
@@ -21,7 +22,7 @@ class CharactersViewModel: CharactersViewModelProtocol {
     
     var charactersService: CharctersServiceProtocol
     var coordinator: MainCoordinator?
-    var characters: [Character] = []
+    var charactersSubject = CurrentValueSubject<[Character], Never>([])
     var reloadTableView: (() -> Void)?
     var nextPageURL: String?
     var showError: ((String) -> Void)?
@@ -30,35 +31,39 @@ class CharactersViewModel: CharactersViewModelProtocol {
         self.charactersService = charactersService
     }
     
-    func fetchCharacters(withStatus status: String?, completion: @escaping () -> Void) {
-        charactersService.fetchCharacters(withStatus: status) { [weak self] result in
+    func fetchCharacters(withStatus status: String?) {
+        charactersService.status = status
+        charactersService.fetchCharacters { [weak self] result in
+            guard let self = self else { return }
             switch result {
-            case .success(let response):
-                self?.characters.append(contentsOf: response.results)
-                self?.charactersService.urlString = response.info.next  // Update URL for the next page
-                // Post notification when the characters are fetched successfully
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: NSNotification.Name("ReloadTableView"), object: nil)
+            case .success(let characters):
+                // Append new characters to the existing array
+                let currentCharacters = self.charactersSubject.value
+                self.charactersSubject.send(currentCharacters + characters.results)  // Append and send new characters
+                if charactersService.status == nil {
+                    charactersService.urlString = characters.info.next
                 }
                 
             case .failure(let error):
                 DispatchQueue.main.async {
-                    self?.showError?(error.localizedDescription)
+                    self.showError?(error.localizedDescription)
                 }
             }
         }
     }
+    
     func numberOfRowsInSection() -> Int {
-        return characters.count
+        return  charactersSubject.value.count
     }
     
     func characterAtIndexPath(_ indexPath: IndexPath) -> Character {
-        return characters[indexPath.row]
+        return charactersSubject.value[indexPath.row]
     }
     
     func fetchNextPageIfNeeded(for indexPath: IndexPath) {
-        if indexPath.row == characters.count - 1 {
-            fetchCharacters(withStatus: nil, completion: { }) // Fetch next page when the user reaches the bottom of the list
+        if indexPath.row ==  charactersSubject.value.count - 1 {
+            fetchCharacters(withStatus: nil) // Fetch next page when the user reaches the bottom of the list
         }
     }
+    
 }

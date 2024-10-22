@@ -8,14 +8,19 @@
 import Foundation
 @testable import CharactersApp
 class CharctersServiceMock: CharctersServiceProtocol {
+    
+    var status: String? = nil
+    var characters: CharactersResponse = .init(info: .init(count: 0, pages: 0, next: nil, prev: nil), results: [])
+    var shouldFail = false  // Simulate success or failure
+
     var urlString: String? = "https://rickandmortyapi.com/api/character"
     var mockCharactersResponse: CharactersResponse?
 
-    func fetchCharacters(completion: @escaping (Result<CharactersResponse, Error>) -> Void) {
-        if let response = mockCharactersResponse {
-            completion(.success(response))
+    func fetchCharacters(completion: @escaping (Result<CharactersApp.CharactersResponse, Error>) -> Void) {
+        if shouldFail {
+            completion(.failure(NSError(domain: "TestError", code: 0, userInfo: nil)))
         } else {
-            completion(.failure(NSError(domain: "", code: 0, userInfo: nil)))
+            completion(.success(characters))
         }
     }
 }

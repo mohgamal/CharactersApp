@@ -28,6 +28,7 @@
 		9ACA30362CC247B500BD8D08 /* CharctersServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA30352CC247B500BD8D08 /* CharctersServiceMock.swift */; };
 		9ACA303B2CC249A800BD8D08 /* CharactersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA303A2CC249A800BD8D08 /* CharactersService.swift */; };
 		9ACA303D2CC2564400BD8D08 /* FilterStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA303C2CC2564400BD8D08 /* FilterStatusView.swift */; };
+		9ACA303F2CC7A14300BD8D08 /* CharactersViewController+Tableview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA303E2CC7A14300BD8D08 /* CharactersViewController+Tableview.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		9ACA30352CC247B500BD8D08 /* CharctersServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharctersServiceMock.swift; sourceTree = "<group>"; };
 		9ACA303A2CC249A800BD8D08 /* CharactersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersService.swift; sourceTree = "<group>"; };
 		9ACA303C2CC2564400BD8D08 /* FilterStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterStatusView.swift; sourceTree = "<group>"; };
+		9ACA303E2CC7A14300BD8D08 /* CharactersViewController+Tableview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharactersViewController+Tableview.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +186,7 @@
 				9ACA30212CC2410B00BD8D08 /* Views */,
 				9ACA301D2CC240D300BD8D08 /* CharactersViewModel.swift */,
 				9ACA301F2CC240FC00BD8D08 /* CharactersViewController.swift */,
+				9ACA303E2CC7A14300BD8D08 /* CharactersViewController+Tableview.swift */,
 			);
 			path = CharactersList;
 			sourceTree = "<group>";
@@ -402,6 +405,7 @@
 				9ACA2FE32CC23EB800BD8D08 /* AppDelegate.swift in Sources */,
 				9ACA30262CC2413900BD8D08 /* CharacterModel.swift in Sources */,
 				9ACA301C2CC2407E00BD8D08 /* MainCoordinator.swift in Sources */,
+				9ACA303F2CC7A14300BD8D08 /* CharactersViewController+Tableview.swift in Sources */,
 				9ACA30282CC2423400BD8D08 /* LoadingFooterView.swift in Sources */,
 				9ACA2FE52CC23EB800BD8D08 /* SceneDelegate.swift in Sources */,
 				9ACA303B2CC249A800BD8D08 /* CharactersService.swift in Sources */,
