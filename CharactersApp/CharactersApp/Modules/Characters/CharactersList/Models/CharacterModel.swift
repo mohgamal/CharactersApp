@@ -19,7 +19,7 @@ struct Info: Codable {
     let prev: String?
 }
 
-struct Character: Codable {
+struct Character: Codable, Identifiable {
     let id: Int
     let name: String
     let status: String

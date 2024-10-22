@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 class MainCoordinator: Coordinator {
     var navigationController: UINavigationController
@@ -21,7 +22,7 @@ class MainCoordinator: Coordinator {
     func start() {
         // Initialize the NetworkService and CharactersViewModel
         let charactersService = CharctersService()
-        let viewModel = CharactersViewModel(charactersService: charactersService)
+        let viewModel = CharactersViewModel(charactersService: charactersService, coordinator: self)
         
         // Initialize the CharactersViewController and pass in the ViewModel
         let charactersViewController = CharactersViewController(viewModel: viewModel)
@@ -32,4 +33,16 @@ class MainCoordinator: Coordinator {
         // Push the CharactersViewController onto the navigation stack
         navigationController.pushViewController(charactersViewController, animated: false)
     }
+    
+    // Function to show the CharacterDetailView
+       func showCharacterDetail(for character: Character) {
+           let characterDetailViewModel = CharacterDetailViewModel(character: character)
+           let characterDetailView = CharacterDetailView(viewModel: characterDetailViewModel)
+           
+           // Create a UIHostingController with the SwiftUI view
+           let hostingController = UIHostingController(rootView: characterDetailView)
+           
+           // Push the UIHostingController onto the navigation stack
+           navigationController.pushViewController(hostingController, animated: true)
+       }
 }
