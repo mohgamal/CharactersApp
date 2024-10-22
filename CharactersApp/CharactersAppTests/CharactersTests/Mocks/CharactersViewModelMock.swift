@@ -11,6 +11,7 @@ import Combine
 @testable import CharactersApp
 
 class MockCharactersViewModel: CharactersViewModelProtocol {
+    var coordinator: CharactersApp.CharactersCoordinator?
     
     var charactersSubject = CurrentValueSubject<[Character], Never>([])
     var reloadTableView: (() -> Void)? = nil
